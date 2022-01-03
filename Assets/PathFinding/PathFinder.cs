@@ -3,26 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathFinder : MonoBehaviour
+
+namespace Assets.PathFinding
 {
-    [SerializeField] Vector2Int startCoordinates;
-    [SerializeField] Vector2Int endCoordinates;
-    public Vector2Int StartCoordinates {get{return startCoordinates;}}
-    public Vector2Int EndCoordinates{get {return endCoordinates;}}
+    public class PathFinder : MonoBehaviour
+{
+    public Vector2Int StartCoordinates {get{return startCoordinates;} set{startCoordinates = value;} } 
+    public Vector2Int EndCoordinates {get {return endCoordinates;} set{endCoordinates = value;} }
+    [SerializeField] private Vector2Int startCoordinates;
+    [SerializeField] private Vector2Int endCoordinates;
+ 
 
-    Vector2Int[] directions = {Vector2Int.right, Vector2Int.up, Vector2Int.down, Vector2Int.left};
-    Dictionary<Vector2Int, Node> grid; //Declaring Dictionary just for comfortability(grid == gridManager.Grid)
-    Dictionary<Vector2Int, Node> explored = new Dictionary<Vector2Int, Node>();
-    Queue<Node> frontier = new Queue<Node>();
+    private Vector2Int[] directions = {Vector2Int.right, Vector2Int.up, Vector2Int.down, Vector2Int.left};
+    private Dictionary<Vector2Int, Assets.PathFinding.Node> grid; 
+    private Dictionary<Vector2Int, Assets.PathFinding.Node> explored = new Dictionary<Vector2Int, Assets.PathFinding.Node>();
+    private Queue<Assets.PathFinding.Node> frontier = new Queue<Assets.PathFinding.Node>();
 
-    Node startNode;
-    Node endNode;
-    Node currentSearchNode;
-    GridManager gridManager;
+    private Assets.PathFinding.Node startNode;
+    private Assets.PathFinding.Node endNode;
+    private Assets.PathFinding.Node currentSearchNode;
+    private Assets.PathFinding.GridManager gridManager;
 
     private void Awake() 
     {
-        gridManager = FindObjectOfType<GridManager>();
+        gridManager = FindObjectOfType<Assets.PathFinding.GridManager>();
         if(gridManager != null) 
         {
             grid = gridManager.Grid;
@@ -38,13 +42,13 @@ public class PathFinder : MonoBehaviour
        GetNewPath();
     }
 
-    public List<Node> GetNewPath()
+    public List<Assets.PathFinding.Node> GetNewPath()
     {
         gridManager.ResetNode();
         BreadthFirstSearch(startCoordinates);
         return BuildPath();
     } 
-    public List<Node> GetNewPath(Vector2Int coord)
+    public List<Assets.PathFinding.Node> GetNewPath(Vector2Int coord)
     {
         gridManager.ResetNode();
         BreadthFirstSearch(coord);
@@ -53,23 +57,23 @@ public class PathFinder : MonoBehaviour
 
     private void ExploreNeighbours()
     {
-        List<Node> neighbours = new List<Node>();
+        List<Assets.PathFinding.Node> neighbours = new List<Assets.PathFinding.Node>();
         foreach(Vector2Int direction in directions)
         {
-            //Searching Neighbour Coodrdinates (F.e cur coord - 1.1, neb coord - 1.2)
+            
             Vector2Int neighbourCoordinates = currentSearchNode.coordinates + direction;
 
-            //If Neighbour Coodrdinate is in our GridSize we will add it
+          
             if(grid.ContainsKey(neighbourCoordinates)) neighbours.Add(grid[neighbourCoordinates]);
         }
 
-        foreach(Node neighbour in neighbours)
+        foreach(Assets.PathFinding.Node neighbour in neighbours)
         {
-            if(!explored.ContainsKey(neighbour.coordinates) && neighbour.isWalkable) // If neighbour coord wasn't explored
+            if(!explored.ContainsKey(neighbour.coordinates) && neighbour.isWalkable)
             {
                 neighbour.connectedTo = currentSearchNode;
-                explored.Add(neighbour.coordinates, neighbour);// We're adding neighbour to our explored Dictionary
-                frontier.Enqueue(neighbour);// Also we're adding neighbour Node to our Queue
+                explored.Add(neighbour.coordinates, neighbour);
+                frontier.Enqueue(neighbour);
             }
                 
         }
@@ -87,22 +91,23 @@ public class PathFinder : MonoBehaviour
 
        bool isRunning = true;
 
-       frontier.Enqueue(grid[coord]); // First Element in Queue is startNode
-       explored.Add(coord, grid[coord]); // As we added to frontier our startNode, it has been explored
+       frontier.Enqueue(grid[coord]); 
+       explored.Add(coord, grid[coord]); 
 
        while(frontier.Count > 0 && isRunning)
        {
-           currentSearchNode = frontier.Dequeue(); // Getting what Node is currently  (f.e. is startNode, for another we are looking in ExploreMethod)
+           currentSearchNode = frontier.Dequeue(); 
            currentSearchNode.isExplored = true;
            ExploreNeighbours();
-           if(currentSearchNode.coordinates == endCoordinates) isRunning = false; // If we've reached end, we need to exit from loop
+           if(currentSearchNode.coordinates == endCoordinates) isRunning = false; 
        }
+       
     }
 
-    List<Node> BuildPath()
+    private List<Assets.PathFinding.Node> BuildPath()
     {
-        List<Node> path = new List<Node>(); // Return path
-        Node currentNode = endNode; // Going from end
+        List<Assets.PathFinding.Node> path = new List<Assets.PathFinding.Node>(); 
+        Assets.PathFinding.Node currentNode = endNode;
         currentNode.isPath = true;
         path.Add(currentNode);
 
@@ -124,7 +129,7 @@ public class PathFinder : MonoBehaviour
             bool previousState = grid[coord].isWalkable;
             
             grid[coord].isWalkable = false;
-            List<Node> newPath = GetNewPath(coord);
+            List<Assets.PathFinding.Node> newPath = GetNewPath(coord);
             grid[coord].isWalkable = previousState;
 
             if(newPath.Count <= 1)
@@ -136,9 +141,10 @@ public class PathFinder : MonoBehaviour
     
        return false;
     }
-
+     
     public void NotifyReceivers()
     {
         BroadcastMessage("RecalculatePath", false, SendMessageOptions.DontRequireReceiver);
     }
+}
 }

@@ -3,33 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-[ExecuteAlways]
-[RequireComponent(typeof(TextMeshPro))]
+namespace Assets.Environment
+{
+    [ExecuteAlways]
+    [RequireComponent(typeof(TextMeshPro))]
 public class CoordinateLabeler : MonoBehaviour
 {
-    [SerializeField] Color defaultColor = Color.white;
-    [SerializeField] Color blockedColor = Color.black;
-    [SerializeField] Color exploredColor = Color.yellow;
-    [SerializeField] Color pathColor = new Color(1f, 0f, 0f);
+    [SerializeField] private Color defaultColor = Color.white;
+    [SerializeField] private Color blockedColor = Color.black;
+    [SerializeField] private Color exploredColor = Color.yellow;
+    [SerializeField] private Color pathColor = new Color(1f, 0f, 0f);
 
-    TextMeshPro label;
-    Vector2Int coordinates = new Vector2Int();
-    GridManager gridManager;
+    private TextMeshPro label;
+    private Vector2Int coordinates = new Vector2Int();
+    private Assets.PathFinding.GridManager gridManager;
  
     
-    
-
-
-    void Awake() 
+    private void Awake() 
     {
         label = GetComponent<TextMeshPro>();
         label.enabled = false;
 
-        gridManager = FindObjectOfType<GridManager>();
+        gridManager = FindObjectOfType<Assets.PathFinding.GridManager>();
         DisplayCoordinates();
     }
 
-    void Update()
+    private void Update()
     {
         if(!Application.isPlaying)
         {
@@ -42,7 +41,7 @@ public class CoordinateLabeler : MonoBehaviour
         ToggleLabels();
     }
 
-    void ToggleLabels()
+    private void ToggleLabels()
     {
         if(Input.GetKeyDown(KeyCode.C))
         {
@@ -50,40 +49,36 @@ public class CoordinateLabeler : MonoBehaviour
         }
     }
 
-    void SetLabelColor()
+    private void SetLabelColor()
     {
        if(gridManager == null)  return;
 
-       Node node = gridManager.GetNode(coordinates);
+        Assets.PathFinding.Node node = gridManager.GetNode(coordinates);
        
        if(node == null)  return;
        
        if(!node.isWalkable) 
        {
             label.color = blockedColor;
-            //Debug.Log("Blocked color!");
        } 
 
        else if(node.isPath)
        {
            label.color = pathColor;
-           //Debug.Log("Path Color!");
        }   
        
        else if(node.isExplored) 
        {
            label.color = exploredColor;
-           //Debug.Log("Explored Color!");
        }  
        
        else 
        {
             label.color = defaultColor;
-            //Debug.Log("Default Color!");
        }
     }
 
-    void DisplayCoordinates()
+    private void DisplayCoordinates()
     {
         if(gridManager == null) return;
 
@@ -93,8 +88,10 @@ public class CoordinateLabeler : MonoBehaviour
         label.text = coordinates.x + "," + coordinates.y;
     }
 
-    void UpdateObjectName()
+    private void UpdateObjectName()
     {
         transform.parent.name = coordinates.ToString();
     }
+}
+
 }

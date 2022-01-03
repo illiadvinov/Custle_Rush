@@ -2,69 +2,63 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TargetLocator : MonoBehaviour
+namespace Assets.Tower
 {
-    [SerializeField] Transform weapon;
-    [SerializeField] ParticleSystem projectileParticles;
-    [SerializeField] float towerRange = 15f;
-    [SerializeField] float turnSpeed = 1f;
-    Quaternion rotGoal;
-    Vector3 direction;
+    public class TargetLocator : MonoBehaviour
+{
+    public float TowerRange {  set{towerRange = value;} }
+    public float TurnSpeed {  set{turnSpeed = value;} }
+    [SerializeField] private Transform weapon;
+    [SerializeField] private ParticleSystem projectileParticles;
+    [SerializeField] private float towerRange = 15f;
+    [SerializeField] private float turnSpeed = 1f;
+    private Quaternion rotGoal;
+    private Vector3 direction;
 
-    Transform target;
+    private Transform target;
     
-    void Update() 
+    private void Update() 
     {
         FindClosestTarget();
         AimWeapon();
-        
     }
 
-    void FindClosestTarget()
+    private void FindClosestTarget()
     {
         
-       Enemy[] enemies = FindObjectsOfType<Enemy>();
+       Assets.Enemy.Enemy[] enemies = FindObjectsOfType<Assets.Enemy.Enemy>();
        Transform closestTarget = null;
        float maxDistance = Mathf.Infinity;
 
-       foreach(Enemy enemy in enemies)
+       foreach(Assets.Enemy.Enemy enemy in enemies)
        {
            float targetDistance = Vector3.Distance(transform.position, enemy.transform.position);
-           //Debug.Log(targetDistance);
 
            if(targetDistance < maxDistance)
            {
                closestTarget = enemy.transform;
-            
                maxDistance = targetDistance;
-               
            }
        }
-
        target = closestTarget;
-
-
     }
 
-    void AimWeapon()
+    private void AimWeapon()
     {
         float targetDistance = Vector3.Distance(transform.position, target.position);
         direction = (transform.position - target.position);
         rotGoal = Quaternion.LookRotation(-direction);
         weapon.transform.rotation = Quaternion.Slerp(weapon.transform.rotation, rotGoal, Time.deltaTime * turnSpeed);
-        
-        //weapon.LookAt(target);
 
         if(targetDistance < towerRange) Attack(true);
         else Attack(false);
-        
     }
     
-    void Attack(bool isActive)
+    private void Attack(bool isActive)
     {
         var emissionModule = projectileParticles.emission;
 
         emissionModule.enabled = isActive;
-        
     }
+}
 }

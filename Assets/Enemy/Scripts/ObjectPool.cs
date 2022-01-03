@@ -2,28 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+namespace Assets.Enemy
 {
-    [SerializeField] GameObject enemyPrefab;
-    [SerializeField] [Range(0, 50)] int poolSize = 5;
-    [SerializeField] [Range(0.1f, 30f)] float spawnTime = 1f;
+    public class ObjectPool : MonoBehaviour
+{
+    public int PoolSize { set {poolSize = value;} }
+    public float SpawnTime { set{spawnTime = value;} }
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] [Range(0, 50)] private int poolSize = 5;
+    [SerializeField] [Range(0.1f, 30f)] private float spawnTime = 1f;
     
+    private GameObject[] pool;
 
-    GameObject[] pool;
-
-    void Awake() 
+    private void Awake() 
     {
-        PopulatePool();
-        
+        PopulatePool(); 
     }
 
-    void Start() 
+    private void Start() 
     {
         StartCoroutine(SpawnEnemy());
         
     }
 
-    void PopulatePool()
+    private void PopulatePool()
     {
         pool = new GameObject[poolSize];
 
@@ -36,7 +38,7 @@ public class ObjectPool : MonoBehaviour
         
     }
 
-     void EnableObjectInPool()
+    private void EnableObjectInPool()
     {
         for(int i = 0; i < pool.Length; i++)
         {
@@ -49,7 +51,7 @@ public class ObjectPool : MonoBehaviour
 
     }
 
-    IEnumerator SpawnEnemy()
+    private IEnumerator SpawnEnemy()
     {
         while(true)
         {
@@ -59,4 +61,5 @@ public class ObjectPool : MonoBehaviour
 
     }
    
+}
 }

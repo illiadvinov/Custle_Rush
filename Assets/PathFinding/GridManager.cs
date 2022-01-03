@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridManager : MonoBehaviour
+namespace Assets.PathFinding
 {
-
-    [SerializeField] Vector2Int gridSize; 
-    [Tooltip("World Grid Size should match UnityEditor snap settings")]
-    int worldGridSize = 10;
-    public int WorldGridSize { get{return worldGridSize; } }
-    Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
+    public class GridManager : MonoBehaviour
+{
+    public Vector2Int GridSize { set {gridSize = value;} }
     public Dictionary<Vector2Int, Node> Grid {get { return grid; } }
+    public int WorldGridSize { get{return worldGridSize; } }
+    [SerializeField] private Vector2Int gridSize; 
+    private int worldGridSize = 10;
+    private Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
+
 
     private void Awake() 
     {
@@ -38,7 +40,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public Vector2Int GetCoordinatesFromPosition(Vector3 position) // 10x;20y = 1,2 
+    public Vector2Int GetCoordinatesFromPosition(Vector3 position)
     {
         Vector2Int coordinates = new Vector2Int();
         coordinates.x = Mathf.RoundToInt(position.x / WorldGridSize);
@@ -47,7 +49,7 @@ public class GridManager : MonoBehaviour
         return coordinates;
     }
 
-    public Vector3 GetPositionFromCoordinates(Vector2Int coord) // 1,2 = 10,20
+    public Vector3 GetPositionFromCoordinates(Vector2Int coord)
     {
         Vector3 position = new Vector3();
         position.x = coord.x * WorldGridSize;
@@ -56,7 +58,7 @@ public class GridManager : MonoBehaviour
         return position;
     }
 
-    void CreateGrid()
+    private void CreateGrid()
     {
         for(int x = 0; x < gridSize.x; x++)
         {
@@ -68,4 +70,5 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+}
 }

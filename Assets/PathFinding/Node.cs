@@ -1,6 +1,8 @@
 using UnityEngine;
 
-[System.Serializable]
+namespace Assets.PathFinding
+{
+    [System.Serializable]
 public class Node 
 {
    public Vector2Int coordinates; 
@@ -15,4 +17,5 @@ public class Node
        this.isWalkable = isWalkable;
 
    }
+}
 }

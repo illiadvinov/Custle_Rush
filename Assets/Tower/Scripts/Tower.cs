@@ -2,23 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+namespace Assets.Tower
 {
-    [SerializeField] int cost = 75;
-    [SerializeField] float buildDelay = 1f;
-    int placedTowers = 0;
+    public class Tower : MonoBehaviour
+{
+    public int Cost { set {cost = value;} }
+    public float BuildDelay { set{buildDelay = value;} }
+    [SerializeField] private int cost = 75;
+    [SerializeField] private float buildDelay = 1f;
 
-    void Start() 
+    private void Start() 
     {
         StartCoroutine(Build());
     }
 
-    IEnumerator Build()
+    private IEnumerator Build()
     {
-        foreach(Transform child in transform) // Disabling child
+        foreach(Transform child in transform)
         {
             child.gameObject.SetActive(false);
-            foreach(Transform grandchild in child) // Disabling all grandchilds in child
+            foreach(Transform grandchild in child)
             {
                 grandchild.gameObject.SetActive(false);
             }
@@ -37,17 +40,18 @@ public class Tower : MonoBehaviour
     }
     public bool CreateTower(Tower tower, Vector3 position)
     {
-        Bank bank = FindObjectOfType<Bank>();
+        Assets.Bank.Bank bank = FindObjectOfType<Assets.Bank.Bank>();
 
         if(bank == null) return false;
 
         if(bank.CurrentBalance >= cost)
         {
-             Instantiate(tower.gameObject, position, Quaternion.identity);
-             bank.Withdraw(cost);
-             return true;
+            Instantiate(tower.gameObject, position, Quaternion.identity);
+            bank.Withdraw(cost);
+            return true;
         }
 
         return false;
     }
+}
 }

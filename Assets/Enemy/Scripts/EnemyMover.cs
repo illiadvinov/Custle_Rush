@@ -2,33 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Enemy))]
+namespace Assets.Enemy
+{
+    [RequireComponent(typeof(Assets.Enemy.Enemy))]
 public class EnemyMover : MonoBehaviour
 {
-    [SerializeField] [Range(0f, 10f)]float speed = 0f;
+    public float Speed { set{speed = value;} }
+    [SerializeField] [Range(0f, 10f)] private float speed = 0f;
 
-    List<Node> path = new List<Node>();
+    private List<Assets.PathFinding.Node> path = new List<Assets.PathFinding.Node>();
 
-    Enemy enemy;
-    GridManager gridManager;
-    PathFinder pathFinder;
+    private Assets.Enemy.Enemy enemy;
+    private Assets.PathFinding.GridManager gridManager;
+    private Assets.PathFinding.PathFinder pathFinder;
     
-    void OnEnable()
+    private void OnEnable()
     {
         ReturnToStart();
         RecalculatePath(true);
        
     }
     
-    void Awake() 
+    private void Awake() 
     {
-        enemy = FindObjectOfType<Enemy>();
-        gridManager = FindObjectOfType<GridManager>();
-        pathFinder = FindObjectOfType<PathFinder>();
+        enemy = FindObjectOfType<Assets.Enemy.Enemy>();
+        gridManager = FindObjectOfType<Assets.PathFinding.GridManager>();
+        pathFinder = FindObjectOfType<Assets.PathFinding.PathFinder>();
     
     }
 
-    void RecalculatePath(bool resetPath)
+    private void RecalculatePath(bool resetPath)
     {
         Vector2Int coord = new Vector2Int();
         if(resetPath) coord = pathFinder.StartCoordinates;
@@ -44,22 +47,18 @@ public class EnemyMover : MonoBehaviour
     }
 
    
-
-    void ReturnToStart()
+    private void ReturnToStart()
     {
         transform.position = gridManager.GetPositionFromCoordinates(pathFinder.StartCoordinates);
-        //if(transform.position != null) Debug.Log(transform.position);
-
     }
 
-    void FinishPath()
+    private void FinishPath()
     {
-         enemy.StealGold();
-         gameObject.SetActive(false);
-
+        enemy.StealGold();
+        gameObject.SetActive(false);
     }
 
-    IEnumerator FollowPath()
+    private IEnumerator FollowPath()
     {
         for(int i = 1; i < path.Count; i++)
         {
@@ -81,5 +80,7 @@ public class EnemyMover : MonoBehaviour
         FinishPath();  
     }
     
+
+}
 
 }

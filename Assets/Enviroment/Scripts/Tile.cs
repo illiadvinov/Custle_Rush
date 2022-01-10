@@ -4,7 +4,7 @@ namespace Assets.Environment
 {
     public class Tile : MonoBehaviour
 {
-    public bool IsPlaceable {  get { return isPlaceable; } }
+
     [SerializeField] private Assets.Tower.Tower towerPrefab;
 
     [SerializeField] private bool isPlaceable;
@@ -12,6 +12,7 @@ namespace Assets.Environment
     private Assets.PathFinding.GridManager gridManager;
     private Assets.PathFinding.PathFinder pathFinder;
     private Vector2Int coordinates = new Vector2Int();
+    public bool IsPlaceable {  get { return isPlaceable; } }
 
     private void Awake()
     {

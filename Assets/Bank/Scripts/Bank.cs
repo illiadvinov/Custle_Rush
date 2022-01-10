@@ -6,30 +6,27 @@ namespace Assets.Bank
 {
     public class Bank : MonoBehaviour
     {
-        public int CurrentBalance { get { return currentBalance; } }
-        public int StartBalance { set { startBalance = value; } }
-        [SerializeField] private int startBalance = 150;
-        [SerializeField] private int currentBalance;
+        public InGameSettings settings;
         [SerializeField] private TextMeshProUGUI displayBalance;
 
         private void Awake()
         {
-            currentBalance = startBalance;
+            settings.currentBalance = settings.startBalance;
             UpdateDisplay();
         }
 
         public void Deposit(int amount)
         {
-            currentBalance += Mathf.Abs(amount);
+            settings.currentBalance += Mathf.Abs(amount);
             UpdateDisplay();
         }
 
         public void Withdraw(int amount)
         {
-            currentBalance -= Mathf.Abs(amount);
+            settings.currentBalance -= Mathf.Abs(amount);
             UpdateDisplay();
 
-            if (currentBalance < 0)
+            if (settings.currentBalance < 0)
             {
                 ReloadScene();
             }
@@ -37,7 +34,7 @@ namespace Assets.Bank
 
         private void UpdateDisplay()
         {
-            displayBalance.text = "Gold:  " + currentBalance;
+            displayBalance.text = "Gold:  " + settings.currentBalance;
         }
         
         private void ReloadScene()

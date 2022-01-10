@@ -5,10 +5,7 @@ namespace Assets.Tower
 {
     public class Tower : MonoBehaviour
 {
-    public int Cost { set {cost = value;} }
-    public float BuildDelay { set{buildDelay = value;} }
-    [SerializeField] private int cost = 75;
-    [SerializeField] private float buildDelay = 1f;
+    public InGameSettings settings;
 
     private void Start() 
     {
@@ -29,7 +26,7 @@ namespace Assets.Tower
         foreach(Transform child in transform)
         {
             child.gameObject.SetActive(true);
-            yield return new WaitForSeconds(buildDelay);
+            yield return new WaitForSeconds(settings.buildDelay);
             foreach(Transform grandchild in child)
             {
                 grandchild.gameObject.SetActive(true);
@@ -43,10 +40,10 @@ namespace Assets.Tower
 
         if(bank == null) return false;
 
-        if(bank.CurrentBalance >= cost)
+        if(bank.settings.currentBalance >= settings.cost)
         {
             Instantiate(tower.gameObject, position, Quaternion.identity);
-            bank.Withdraw(cost);
+            bank.Withdraw(settings.cost);
             return true;
         }
 

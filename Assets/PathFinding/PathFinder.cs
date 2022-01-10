@@ -6,12 +6,8 @@ namespace Assets.PathFinding
 {
     public class PathFinder : MonoBehaviour
 {
-    public Vector2Int StartCoordinates {get{return startCoordinates;} set{startCoordinates = value;} } 
-    public Vector2Int EndCoordinates {get {return endCoordinates;} set{endCoordinates = value;} }
-    [SerializeField] private Vector2Int startCoordinates;
-    [SerializeField] private Vector2Int endCoordinates;
+    public InGameSettings settings;
  
-
     private Vector2Int[] directions = {Vector2Int.right, Vector2Int.up, Vector2Int.down, Vector2Int.left};
     private Dictionary<Vector2Int, Assets.PathFinding.Node> grid; 
     private Dictionary<Vector2Int, Assets.PathFinding.Node> explored = new Dictionary<Vector2Int, Assets.PathFinding.Node>();
@@ -28,8 +24,8 @@ namespace Assets.PathFinding
         if(gridManager != null) 
         {
             grid = gridManager.Grid;
-            startNode = grid[startCoordinates];
-            endNode = grid[endCoordinates];
+            startNode = grid[settings.startCoordinates];
+            endNode = grid[settings.endCoordinates];
         }
 
 
@@ -43,7 +39,7 @@ namespace Assets.PathFinding
     public List<Assets.PathFinding.Node> GetNewPath()
     {
         gridManager.ResetNode();
-        BreadthFirstSearch(startCoordinates);
+        BreadthFirstSearch(settings.startCoordinates);
         return BuildPath();
     } 
     public List<Assets.PathFinding.Node> GetNewPath(Vector2Int coord)
@@ -97,7 +93,7 @@ namespace Assets.PathFinding
            currentSearchNode = frontier.Dequeue(); 
            currentSearchNode.isExplored = true;
            ExploreNeighbours();
-           if(currentSearchNode.coordinates == endCoordinates) isRunning = false; 
+           if(currentSearchNode.coordinates == settings.endCoordinates) isRunning = false; 
        }
        
     }

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216c2c7c685ad644e9e635e19fbe5441, type: 3}
+  m_Name: Settings
+  m_EditorClassIdentifier: 
+  startBalance: 500
+  currentBalance: 0
+  goldReward: 25
+  goldPenalty: 30
+  maxHitPoints: 7
+  difficulty: 3
+  speed: 1
+  poolSize: 5
+  spawnTime: 1
+  gridSize: {x: 0, y: 0}
+  startCoordinates: {x: 8, y: 4}
+  endCoordinates: {x: 15, y: 12}
+  towerRange: 15
+  turnSpeed: 1
+  cost: 75
+  buildDelay: 1

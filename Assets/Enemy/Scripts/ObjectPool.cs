@@ -5,12 +5,9 @@ namespace Assets.Enemy
 {
     public class ObjectPool : MonoBehaviour
 {
-    public int PoolSize { set {poolSize = value;} }
-    public float SpawnTime { set{spawnTime = value;} }
+    public InGameSettings settings;
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] [Range(0, 50)] private int poolSize = 5;
-    [SerializeField] [Range(0.1f, 30f)] private float spawnTime = 1f;
-    
+
     private GameObject[] pool;
 
     private void Awake() 
@@ -26,7 +23,7 @@ namespace Assets.Enemy
 
     private void PopulatePool()
     {
-        pool = new GameObject[poolSize];
+        pool = new GameObject[settings.poolSize];
 
         for(int i = 0; i < pool.Length; i++)
         {
@@ -55,7 +52,7 @@ namespace Assets.Enemy
         while(true)
         {
             EnableObjectInPool();
-            yield return new WaitForSeconds(spawnTime);
+            yield return new WaitForSeconds(settings.spawnTime);
         }
 
     }

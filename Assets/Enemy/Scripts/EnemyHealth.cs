@@ -5,17 +5,14 @@ namespace Assets.Enemy
     [RequireComponent(typeof(Assets.Enemy.Enemy))]
     public class EnemyHealth : MonoBehaviour
 {
-    public int MaxHitPoints { set {maxHitPoints = value;} }
-    public int Difficulty { set {difficulty = value;} }
-    [SerializeField] private int maxHitPoints = 7;
-    [SerializeField] private int difficulty = 3;
-    private int currentHealth = 0;
+    public InGameSettings settings;
 
+    private int currentHealth = 0;
     private Assets.Enemy.Enemy enemy;
 
     private void OnEnable() 
     {
-        currentHealth = maxHitPoints; 
+        currentHealth = settings.maxHitPoints; 
     }
 
     private void Start() 
@@ -34,7 +31,7 @@ namespace Assets.Enemy
         if(currentHealth <= 0)
         {
             gameObject.SetActive(false);
-            maxHitPoints += difficulty;
+            settings.maxHitPoints += settings.difficulty;
             enemy.RewardGold();
             
         }

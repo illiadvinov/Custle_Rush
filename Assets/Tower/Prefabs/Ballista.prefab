@@ -4852,10 +4852,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b88b6869f4156c54e84c6bf3e7ec8d8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: fffbccae082d174418e16941c4a547c7, type: 2}
   weapon: {fileID: 3144582324300694500}
   projectileParticles: {fileID: 2144151584309768274}
-  towerRange: 25
-  turnSpeed: 10
 --- !u!114 &-6371277648479972234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4868,8 +4867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b553fee20041e8946b4bd39d6a30bbbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 75
-  buildDelay: 0.5
+  settings: {fileID: 11400000, guid: fffbccae082d174418e16941c4a547c7, type: 2}
 --- !u!1 &6131056645070147807
 GameObject:
   m_ObjectHideFlags: 0

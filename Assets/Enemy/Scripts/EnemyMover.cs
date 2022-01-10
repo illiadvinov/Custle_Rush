@@ -7,8 +7,7 @@ namespace Assets.Enemy
     [RequireComponent(typeof(Assets.Enemy.Enemy))]
 public class EnemyMover : MonoBehaviour
 {
-    public float Speed { set{speed = value;} }
-    [SerializeField] [Range(0f, 10f)] private float speed = 0f;
+    public InGameSettings settings;
 
     private List<Assets.PathFinding.Node> path = new List<Assets.PathFinding.Node>();
 
@@ -34,7 +33,7 @@ public class EnemyMover : MonoBehaviour
     private void RecalculatePath(bool resetPath)
     {
         Vector2Int coord = new Vector2Int();
-        if(resetPath) coord = pathFinder.StartCoordinates;
+        if(resetPath) coord = pathFinder.settings.startCoordinates;
         else coord = gridManager.GetCoordinatesFromPosition(transform.position);
 
         StopAllCoroutines();
@@ -49,7 +48,7 @@ public class EnemyMover : MonoBehaviour
    
     private void ReturnToStart()
     {
-        transform.position = gridManager.GetPositionFromCoordinates(pathFinder.StartCoordinates);
+        transform.position = gridManager.GetPositionFromCoordinates(pathFinder.settings.startCoordinates);
     }
 
     private void FinishPath()
@@ -70,7 +69,7 @@ public class EnemyMover : MonoBehaviour
 
             while(travelPercent < 1f)
             {
-                travelPercent += Time.deltaTime * speed;
+                travelPercent += Time.deltaTime * settings.speed;
                 transform.position = Vector3.Lerp(startPosition, endPosition, travelPercent);
                 yield return new WaitForEndOfFrame();
             }

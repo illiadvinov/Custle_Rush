@@ -4,12 +4,9 @@ namespace Assets.Tower
 {
     public class TargetLocator : MonoBehaviour
 {
-    public float TowerRange {  set{towerRange = value;} }
-    public float TurnSpeed {  set{turnSpeed = value;} }
+    public InGameSettings settings;
     [SerializeField] private Transform weapon;
     [SerializeField] private ParticleSystem projectileParticles;
-    [SerializeField] private float towerRange = 15f;
-    [SerializeField] private float turnSpeed = 1f;
     private Quaternion rotGoal;
     private Vector3 direction;
 
@@ -46,9 +43,9 @@ namespace Assets.Tower
         float targetDistance = Vector3.Distance(transform.position, target.position);
         direction = (transform.position - target.position);
         rotGoal = Quaternion.LookRotation(-direction);
-        weapon.transform.rotation = Quaternion.Slerp(weapon.transform.rotation, rotGoal, Time.deltaTime * turnSpeed);
+        weapon.transform.rotation = Quaternion.Slerp(weapon.transform.rotation, rotGoal, Time.deltaTime * settings.turnSpeed);
 
-        if(targetDistance < towerRange) Attack(true);
+        if(targetDistance < settings.towerRange) Attack(true);
         else Attack(false);
     }
     

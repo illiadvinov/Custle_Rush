@@ -36,7 +36,7 @@ namespace Assets.Bank
         {
             displayBalance.text = "Gold:  " + settings.currentBalance;
         }
-        
+
         private void ReloadScene()
         {
             Scene currentscene = SceneManager.GetActiveScene();

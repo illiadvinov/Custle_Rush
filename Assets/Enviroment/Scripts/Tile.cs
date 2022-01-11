@@ -3,47 +3,45 @@ using UnityEngine;
 namespace Assets.Environment
 {
     public class Tile : MonoBehaviour
-{
-
-    [SerializeField] private Assets.Tower.Tower towerPrefab;
-
-    [SerializeField] private bool isPlaceable;
-
-    private Assets.PathFinding.GridManager gridManager;
-    private Assets.PathFinding.PathFinder pathFinder;
-    private Vector2Int coordinates = new Vector2Int();
-    public bool IsPlaceable {  get { return isPlaceable; } }
-
-    private void Awake()
     {
-        gridManager = FindObjectOfType<Assets.PathFinding.GridManager>();
-        pathFinder  = FindObjectOfType<Assets.PathFinding.PathFinder>();
-    }
 
-    private void Start() 
-    {
-        if(gridManager)
+        public bool IsPlaceable { get { return isPlaceable; } }
+        [SerializeField] private bool isPlaceable;
+        [SerializeField] private Assets.Tower.Tower towerPrefab;
+        private Assets.PathFinding.GridManager gridManager;
+        private Assets.PathFinding.PathFinder pathFinder;
+        private Vector2Int coordinates = new Vector2Int();
+
+        private void Awake()
         {
-            coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
+            gridManager = FindObjectOfType<Assets.PathFinding.GridManager>();
+            pathFinder = FindObjectOfType<Assets.PathFinding.PathFinder>();
+        }
 
-            if(!isPlaceable)
+        private void Start()
+        {
+            if (gridManager)
             {
-                gridManager.BlockNode(coordinates); 
+                coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
+
+                if (!isPlaceable)
+                {
+                    gridManager.BlockNode(coordinates);
+                }
+            }
+        }
+
+        private void OnMouseUp()
+        {
+            if (gridManager.GetNode(coordinates).isWalkable && !pathFinder.WillBlockPath(coordinates) && !Assets.PauseMenu.PauseMenu.isPaused)
+            {
+                bool isSuccesful = towerPrefab.CreateTower(towerPrefab, transform.position);
+                if (isSuccesful)
+                {
+                    gridManager.BlockNode(coordinates);
+                    pathFinder.NotifyReceivers();
+                }
             }
         }
     }
- 
-    private void OnMouseUp() 
-    {        
-        if(gridManager.GetNode(coordinates).isWalkable && !pathFinder.WillBlockPath(coordinates) && !Assets.PauseMenu.PauseMenu.isPaused)
-        {
-           bool isSuccesful = towerPrefab.CreateTower(towerPrefab, transform.position);
-           if(isSuccesful) 
-           {
-               gridManager.BlockNode(coordinates);
-               pathFinder.NotifyReceivers();
-           }
-        }
-    }
-}
 }

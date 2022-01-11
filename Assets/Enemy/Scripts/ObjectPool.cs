@@ -4,58 +4,58 @@ using UnityEngine;
 namespace Assets.Enemy
 {
     public class ObjectPool : MonoBehaviour
-{
-    public InGameSettings settings;
-    [SerializeField] private GameObject enemyPrefab;
-
-    private GameObject[] pool;
-
-    private void Awake() 
     {
-        PopulatePool(); 
-    }
+        public InGameSettings settings;
+        [SerializeField] private GameObject enemyPrefab;
 
-    private void Start() 
-    {
-        StartCoroutine(SpawnEnemy());
-        
-    }
+        private GameObject[] pool;
 
-    private void PopulatePool()
-    {
-        pool = new GameObject[settings.poolSize];
-
-        for(int i = 0; i < pool.Length; i++)
+        private void Awake()
         {
-            pool[i] = Instantiate(enemyPrefab, transform);
-            pool[i].SetActive(false);
+            PopulatePool();
         }
 
-        
-    }
-
-    private void EnableObjectInPool()
-    {
-        for(int i = 0; i < pool.Length; i++)
+        private void Start()
         {
-            if(pool[i].activeInHierarchy == false)
+            StartCoroutine(SpawnEnemy());
+
+        }
+
+        private void PopulatePool()
+        {
+            pool = new GameObject[settings.poolSize];
+
+            for (int i = 0; i < pool.Length; i++)
             {
-                pool[i].SetActive(true);
-                return;
+                pool[i] = Instantiate(enemyPrefab, transform);
+                pool[i].SetActive(false);
             }
+
+
         }
 
-    }
-
-    private IEnumerator SpawnEnemy()
-    {
-        while(true)
+        private void EnableObjectInPool()
         {
-            EnableObjectInPool();
-            yield return new WaitForSeconds(settings.spawnTime);
+            for (int i = 0; i < pool.Length; i++)
+            {
+                if (pool[i].activeInHierarchy == false)
+                {
+                    pool[i].SetActive(true);
+                    return;
+                }
+            }
+
+        }
+
+        private IEnumerator SpawnEnemy()
+        {
+            while (true)
+            {
+                EnableObjectInPool();
+                yield return new WaitForSeconds(settings.spawnTime);
+            }
+
         }
 
     }
-   
-}
 }

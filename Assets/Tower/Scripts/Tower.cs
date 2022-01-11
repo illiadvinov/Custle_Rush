@@ -4,50 +4,50 @@ using UnityEngine;
 namespace Assets.Tower
 {
     public class Tower : MonoBehaviour
-{
-    public InGameSettings settings;
-
-    private void Start() 
     {
-        StartCoroutine(Build());
-    }
+        public InGameSettings settings;
 
-    private IEnumerator Build()
-    {
-        foreach(Transform child in transform)
+        private void Start()
         {
-            child.gameObject.SetActive(false);
-            foreach(Transform grandchild in child)
+            StartCoroutine(Build());
+        }
+
+        private IEnumerator Build()
+        {
+            foreach (Transform child in transform)
             {
-                grandchild.gameObject.SetActive(false);
+                child.gameObject.SetActive(false);
+                foreach (Transform grandchild in child)
+                {
+                    grandchild.gameObject.SetActive(false);
+                }
             }
-        }
 
-        foreach(Transform child in transform)
-        {
-            child.gameObject.SetActive(true);
-            yield return new WaitForSeconds(settings.buildDelay);
-            foreach(Transform grandchild in child)
+            foreach (Transform child in transform)
             {
-                grandchild.gameObject.SetActive(true);
+                child.gameObject.SetActive(true);
+                yield return new WaitForSeconds(settings.buildDelay);
+                foreach (Transform grandchild in child)
+                {
+                    grandchild.gameObject.SetActive(true);
+                }
             }
+
         }
-
-    }
-    public bool CreateTower(Tower tower, Vector3 position)
-    {
-        Assets.Bank.Bank bank = FindObjectOfType<Assets.Bank.Bank>();
-
-        if(bank == null) return false;
-
-        if(bank.settings.currentBalance >= settings.cost)
+        public bool CreateTower(Tower tower, Vector3 position)
         {
-            Instantiate(tower.gameObject, position, Quaternion.identity);
-            bank.Withdraw(settings.cost);
-            return true;
-        }
+            Assets.Bank.Bank bank = FindObjectOfType<Assets.Bank.Bank>();
 
-        return false;
+            if (bank == null) return false;
+
+            if (bank.settings.currentBalance >= settings.cost)
+            {
+                Instantiate(tower.gameObject, position, Quaternion.identity);
+                bank.Withdraw(settings.cost);
+                return true;
+            }
+
+            return false;
+        }
     }
-}
 }

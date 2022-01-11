@@ -20819,8 +20819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a10a0bb1e55b34da1d2ee807291711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startCoordinates: {x: 8, y: 4}
-  endCoordinates: {x: 15, y: 12}
+  settings: {fileID: 11400000, guid: fffbccae082d174418e16941c4a547c7, type: 2}
 --- !u!4 &1103372952 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7121922927625259253, guid: fa2b5aa925727a946ab3f906e6e102ac, type: 3}
@@ -32851,7 +32850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05950a9facc81c243893b1337428095b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 18, y: 15}
+  settings: {fileID: 11400000, guid: fffbccae082d174418e16941c4a547c7, type: 2}
 --- !u!4 &1809046562
 Transform:
   m_ObjectHideFlags: 0
@@ -39987,6 +39986,10 @@ PrefabInstance:
       value: Bank
       objectReference: {fileID: 0}
     - target: {fileID: 7228587796937020269, guid: ca227b8550147274b9d5fa839cff06ee, type: 3}
+      propertyPath: settings
+      value: 
+      objectReference: {fileID: 11400000, guid: fffbccae082d174418e16941c4a547c7, type: 2}
+    - target: {fileID: 7228587796937020269, guid: ca227b8550147274b9d5fa839cff06ee, type: 3}
       propertyPath: startBalance
       value: 150
       objectReference: {fileID: 0}
@@ -40099,6 +40102,10 @@ PrefabInstance:
       propertyPath: poolSize
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 9138422707694921023, guid: 5295e458c10d9ad41aef5c44305cb57e, type: 3}
+      propertyPath: settings
+      value: 
+      objectReference: {fileID: 11400000, guid: fffbccae082d174418e16941c4a547c7, type: 2}
     - target: {fileID: 9138422707694921023, guid: 5295e458c10d9ad41aef5c44305cb57e, type: 3}
       propertyPath: spawnTime
       value: 3
